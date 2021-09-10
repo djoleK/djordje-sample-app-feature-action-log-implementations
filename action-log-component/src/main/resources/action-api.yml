@@ -1,0 +1,99 @@
+openapi: 3.0.2
+info:
+  title: ActionEvent
+  version: 1.0.0
+  description: Action Event API
+  contact:
+    name: Djordje Kostic
+    url: 'https://phoenixnap.com/bare-metal-cloud'
+    email: djordjeko@ccbill.com
+servers:
+  - url: 'http://localhost:8080'
+    description: Localhost
+paths:
+  /action-log:
+    get:
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ActionEvent'
+          description: Succesful response - returns an array of Action Events.
+        '401':
+          content:
+            application/json: { }
+          description: Unauthorized.
+        '500':
+          description: We're not supposed to be here.
+      summary: Get a list of all action events.
+      description: Successful response - returns an array of ActionEvent entities.
+    parameters:
+      - examples:
+          Logged in user id example:
+            value: '"60c3b5433c6c7a4bb69be303"'
+        name: loggedInUserId
+        description: Logged in user ID.
+        schema:
+          $ref: '#/components/schemas/loggedInUserId'
+        in: query
+      - examples:
+          Customer ID Example:
+            value: '"60c3b5433c6c7a4bb69be303"'
+        name: customerId
+        description: Customer ID.
+        schema:
+          $ref: '#/components/schemas/customerId'
+        in: query
+      - examples:
+          Action example:
+            value: '"CREATED"'
+        name: action
+        description: Action performed on the customer.
+        schema:
+          $ref: '#/components/schemas/action'
+        in: query
+components:
+  schemas:
+    ActionEvent:
+      description: Action event.
+      type: object
+      properties:
+        customerId:
+          description: Unique ID for the customer.
+          type: string
+        loggedInUserId:
+          description: Logged in user ID.
+          type: string
+        id:
+          description: Unique ID for the action event.
+          type: string
+        action:
+          description: Action performed on the customer.
+          type: string
+      example:
+        customerId: 60c3b5433c6c7a4bb69be303
+        loggedInUserId: 60c3b5433c6c7a4bb69be303
+        id: 60c3b5433c6c7a4bb69be303
+        action: CREATED
+    loggedInUserId:
+      description: Logged in user.
+      type: string
+      example: '"60c3b5433c6c7a4bb69be303"'
+    customerId:
+      description: Customer id.
+      type: string
+      example: '"60c3b5433c6c7a4bb69be303"'
+    action:
+      description: Action performed on the user.
+      enum:
+        - CREATED
+        - UPDATED
+        - DELETED
+      type: string
+      example: '"DELETED"'
+tags:
+  - name: actionEvent
+    description: Action event tag.

@@ -1,0 +1,209 @@
+---
+openapi: 3.0.2
+info:
+  title: customer
+  version: 1.0.0
+  description: Customer Rest API
+  contact:
+    name: Djordje Kostic
+    url: https://phoenixnap.com/bare-metal-cloud
+    email: djordjeko@ccbill.com
+servers:
+  - url: http://localhost:8080
+    description: Localhost
+paths:
+  /customers:
+    summary: Path used to manage the list of customers.
+    description: "The REST endpoint/path used to list and create zero or more `customer`\
+      \ entities.  This path contains a `GET` and `POST` operation to perform the\
+      \ list and create tasks, respectively."
+    get:
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/customer'
+              examples:
+                customers:
+                  value:
+                    - id: 60bde2c1ce3e7e206d13259a
+                      firstName: Milos
+                      lastName: Mitic
+                    - id: 60bde2cece3e7e206d13259b
+                      firstName: Mare
+                      lastName: Zivkovic
+                    - id: 60c3b5433c6c7a4bb69be303
+                      firstName: Djole
+                      lastName: Kostic
+                    - id: 60c4a46ea7daf43cfa0eab82
+                      firstName: Kris
+                      lastName: Galea
+          description: Successful response - returns an array of `customer` entities.
+        "204":
+          description: No customers found.
+        "500":
+          description: Internal server error.
+      operationId: getAllCustomers
+      summary: List All customers
+      description: Gets a list of all `customer` entities.
+    post:
+      requestBody:
+        description: A new `customer` to be created.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/customer'
+            examples:
+              customer:
+                value:
+                  id: 60c3b5433c6c7a4bb69be303
+                  firstName: Djole
+                  lastName: Kostic
+        required: true
+      tags:
+        - customer
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/customer'
+              examples:
+                customer:
+                  value:
+                    id: 60c3b5433c6c7a4bb69be303
+                    firstName: Djole
+                    lastName: Kostic
+          description: Successful response.
+      operationId: createCustomer
+      summary: Create a customer
+      description: Creates a new instance of a `customer`.
+  /customers/{id}:
+    summary: Path used to manage a single customer.
+    description: "The REST endpoint/path used to get, update, and delete single instances\
+      \ of an `customer`.  This path contains `GET`, `PUT`, and `DELETE` operations\
+      \ used to perform the get, update, and delete tasks, respectively."
+    get:
+      tags:
+        - customer
+      parameters:
+        - examples:
+            id:
+              value: '"60bde2c1ce3e7e206d13259a"'
+          name: id
+          description: A unique identifier for a `customer`.
+          schema:
+            type: string
+          in: path
+          required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/customer'
+              examples:
+                customer:
+                  value:
+                    id: 60c3b5433c6c7a4bb69be303
+                    firstName: Djole
+                    lastName: Kostic
+          description: Successful response - returns a single `customer`.
+        "404":
+          description: Unsuccessful response - no customer found with provided id.
+      operationId: getCustomerById
+      summary: Get a customer
+      description: Gets the details of a single instance of a `customer`.
+    put:
+      requestBody:
+        description: Updated `customer` information.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/customer'
+            examples:
+              customer:
+                value:
+                  id: 60c3b5433c6c7a4bb69be303
+                  firstName: Djole
+                  lastName: Kostic
+        required: true
+      tags:
+        - customer
+      parameters:
+        - examples:
+            id:
+              value: '"60bde2c1ce3e7e206d13259a"'
+          name: id
+          description: A unique identifier for a `customer`.
+          schema:
+            type: string
+          in: path
+          required: true
+      responses:
+        "202":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/customer'
+              examples:
+                customer:
+                  value:
+                    id: 60c3b5433c6c7a4bb69be303
+                    firstName: Djole
+                    lastName: Kostic
+          description: Successful response.
+        "404":
+          description: Customer not found.
+      operationId: updateCustomer
+      summary: Update a customer
+      description: Updates an existing `customer`.
+    delete:
+      parameters:
+        - examples:
+            id:
+              value: '"60bde2c1ce3e7e206d13259a"'
+          name: id
+          description: A unique identifier for a `customer`.
+          schema:
+            type: string
+          in: path
+          required: true
+      responses:
+        "204":
+          description: Successful response.
+        "500":
+          description: Internal server error.
+      operationId: deleteCustomer
+      summary: Delete a customer
+      description: Deletes an existing `customer`.
+    parameters:
+      - name: id
+        description: A unique identifier for a `customer`.
+        schema:
+          type: string
+        in: path
+        required: true
+components:
+  schemas:
+    customer:
+      title: Root Type for customer
+      description: Customer model.
+      type: object
+      properties:
+        id:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+      example:
+        id: 60c3b5433c6c7a4bb69be303
+        firstName: Djole
+        lastName: Kostic
+tags:
+  - name: customer
+    description: Customer

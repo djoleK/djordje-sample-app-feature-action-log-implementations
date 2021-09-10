@@ -1,0 +1,27 @@
+server:
+  port: ${SERVER_PORT:8081}
+spring:
+  application.name: ${APPLICATION_NAME:action-log-component}
+  jackson:
+    date-format: org.openapitools.RFC3339DateFormat
+    serialization:
+      WRITE_DATES_AS_TIMESTAMPS: false
+  data:
+    mongodb:
+      database: actionDB
+      uri: mongodb://root:pass@mongodb.middleware:27017/admin
+      repositories:
+        enabled: true
+  rabbitmq:
+    host: rabbitmq-ha.middleware
+    port: 5672
+    username: rabbitmq
+    password: rabbitmq
+    virtualHost: /bmcvhost
+springfox:
+  documentation:
+    swagger:
+      v2:
+        path: /api-docs
+rabbitmq:
+  exchange: CustomerExchange

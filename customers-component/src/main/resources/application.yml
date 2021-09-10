@@ -1,0 +1,42 @@
+server:
+  port: ${SERVER_PORT:8080}
+spring:
+  application.name: ${APPLICATION_NAME:customers-component}
+  jackson:
+    date-format: org.openapitools.RFC3339DateFormat
+    serialization:
+      WRITE_DATES_AS_TIMESTAMPS: false
+  data:
+    mongodb:
+      database: customerDB
+      uri: mongodb://root:pass@mongodb.middleware:27017/admin
+      repositories:
+        enabled: true
+  security:
+    oauth2:
+      client:
+        provider:
+          keycloak:
+            issuer-uri: http://localhost:8180/auth/realms/SpringBootKeycloak
+        registration:
+          keycloak:
+            client-id: login-app
+  rabbitmq:
+    host: rabbitmq-ha.middleware
+    port: 5672
+    username: rabbitmq
+    password: rabbitmq
+    virtualHost: /bmcvhost
+springfox:
+  documentation:
+    swagger:
+      v2:
+        path: /api-docs
+keycloak:
+  auth-server-url: http://localhost:8180/auth
+  realm: SpringBootKeycloak
+  resource: login-app
+  public-client: true
+  bearer-only: true
+rabbitmq:
+  exchange: CustomerExchange
